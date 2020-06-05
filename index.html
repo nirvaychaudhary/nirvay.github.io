@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my portfolio</title>
+    <style>
+        .main {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="contentload">
+        <h1>Loading...</h1>
+    </div>
+    <div class="main" id="maincontent" hidden>
+        <img id="profileimage" height="100px" width="100px">
+        <h2 id="fullname"></h2>
+        <p id="created"></p>
+        <h5 id="followersinformation"></h5>
+        <p>
+            check me on <a id="githublink">GitHub</a>
+        </p>
+        <a class="twitter-timeline" data-width="400" data-height="400" href="https://twitter.com/TwitterDev?ref_src=twsrc%5Etfw">Tweets by TwitterDev</a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+
+    <script>
+        fetch("https://api.github.com/users/nirvaychaudhary")
+            .then(response => response.json())
+            .then(function(data) {
+                console.log(data)
+
+                let followercount = data['followers']
+                let followersinfo = 'followed by $ {followercount} people'
+                document.getElementById('profileimage').src = data['avatar_url']
+                document.getElementById('fullname').textContent = data['name']
+                document.getElementById('created').textContent = data['created_at']
+                document.getElementById('githublink').href = data['html_url']
+                document.getElementById('followersinformation').textContent = followersinfo
+
+                document.getElementById('contentload').hidden = true
+                document.getElementById('maincontent').hidden = false
+            })
+        fetch("https://api.github.com/users/nirvaychaudhary/repos")
+            .then(response => response.json())
+            .then(function(data) {
+                console.log(data)
+
+                data.getElementById('githublink').href = data['html_url']
+                data.getElementById('fullname').textContent = data['full_name']
+            })
+    </script>
+</body>
+
+</html>
